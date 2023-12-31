@@ -1,0 +1,73 @@
+<%- include ('../partials/header') %>
+<%- include ('../partials/menu') %>
+
+<div class="container">
+    <div class="rec home-color">
+        <h7> <%= totalRecipesCount %> recipes generated</h7>
+    </div>
+    
+    <div class="title home-color mx-auto text-center">
+    
+        <h1>GENERATE A RECIPE PERFECTLY CATERED TO YOU</h1>
+    </div>
+    <div>
+        <img src="resources/imgs/home_img.jpg"  alt="Image of food and ingredients" class="rounded img-fluid"></img> 
+    </div>
+
+    <div class="home-color info">
+        <h3 class="home h3title">A little more about what we can do for you</h3>
+        
+        <p>Need a quick an easy alfredo recipe? We got you. Need to make something with only the items you have on hand? No
+        problem. Want a meal with certain macros? You got it. With our AI recipe generator, we can give you any recipe you could
+        possibly need in a matter of seconds. We’ll also memorize what recipes you like the best in order to suggest recipes
+        you’ll enjoy the most. Head over to our 
+        <a class="hover" href="pantry">Pantry</a> 
+        page to put in the ingredients you have at home and go to 
+        <a class="hover" href="settings">Settings</a> to put
+        in preferences and dietary restrictions.</p>
+    </div>
+
+    <% if (!session) { %>
+        <div class="center">
+            <button type="button" class="reg btn btn-lg"
+                style="--bs-btn-padding-y: .8rem; --bs-btn-padding-x: 2rem; --bs-btn-font-size: 2.6rem;">
+                <a href="register" style="font-family: 'Cochin', serif;">Sign Up</a>
+            </button>
+        </div>
+        <% } %>
+    <% if (session) { %> 
+        <hr class="line">
+        <div class="title home-color mx-auto text-center">
+        
+            <h1>Recent Posts</h1>
+        </div>
+            <% posts.forEach(function(post){  %>
+            <div id="social-media">
+                <div class="text-center" id="sm-object">
+                    <div class="text-start" id="title">
+                        <h2> <a><%= post.title %></a> </h2> <h6>Posted by: <%= post.author %> </h6> 
+                        <h6>Total likes: <%= post.likes %></h6>
+                        <% if (post.user_has_liked) { %>
+                            <form action="/unlike" method="POST">
+                                <input type="submit" value="Unlike" class="btn-kitchen-create"/>
+                                <input type="hidden" name="recipe_id" value="<%= post.recipe_id %>">
+                            </form>
+                        <% } else { %>
+                            <form action="/like" method="POST">
+                                <input type="submit" value="Like" class="btn-kitchen-create"/>
+                                <input type="hidden" name="recipe_id" value="<%= post.recipe_id %>">
+                            </form>
+                        <% } %>
+                    </div>
+                    <hr>
+                    <div id="info">
+                        <p>
+                            <%= post.content.replaceAll("\\n", "\n") %>
+                        </p>
+                    </div>
+                </div>
+            </div> 
+            <% } ); }%> 
+</div>
+
+<%- include ('../partials/footer') %>

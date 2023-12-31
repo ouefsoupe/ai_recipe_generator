@@ -1,0 +1,53 @@
+<%- include ('../partials/header') %>
+<%- include ('../partials/menu') %>
+
+<div class="accordion accordion-flush home-color">
+  <h1 class="title text-center">Favorites</h1>
+  <div class="accordion" id="accordionExample">
+    <% recipes.forEach(function(item, index){ %>
+      <div class="fav accordion-item">
+        <h2 class="fav accordion-header" id="heading<%= index + 1 %>">
+          <button class="accordion-button f colap" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapse<%= index + 1 %>" aria-expanded="true" aria-controls="collapse<%= index + 1 %>">
+            <h3 class="recName">
+              <%= item.recipe_name %>
+            </h3>
+          </button>
+        </h2>
+        <div id="collapse<%= index + 1 %>" class="accordion-collapse collapse f" aria-labelledby="heading<%= index + 1 %>"
+          data-bs-parent="#accordionExample">
+          <div class="accordion-body e">
+            
+            <%= item.recipe_text %>
+            <div class="row">
+              <div class="col-8">
+
+              </div>
+              <div class="col-2">
+                <form action="/kitchen/update/<%= item.recipe_id %>" method="post">
+                  <input type="hidden" name="_method" value="put">
+                  <input type="hidden" name="recipeName" value="<%= item.recipe_name %>">
+                  <input type="hidden" name="recipeText" value="<%= item.recipe_text %>">
+                  <input type="hidden" name="isStarred" value="<%= item.is_starred %>">
+                  <input type="hidden" name="originPage" value="favorites">
+                  <button type="submit" class="kitch btn btn-kitchen-create">
+                      Un-Favorite
+                  </button>
+                </form>
+              </div>
+              <div class="col-2">
+                <form action="/kitchen/postRecipe" method="post">
+                  <input type="hidden" name="recipeId" value="<%= item.recipe_id %>">
+                  <input type="hidden" name="originPage" value="favorites">
+                  <button type="submit" class="kitch btn btn-kitchen-create">Post</button>
+              </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% }); %>
+  </div>
+</div>
+
+<%- include ('../partials/footer') %>
